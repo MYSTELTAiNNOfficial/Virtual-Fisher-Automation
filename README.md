@@ -36,16 +36,15 @@ npm run start
 ```
 And done, the bot will automatically run and fish for you.
 
-### About CAPTHCA Detection
+## About CAPTHCA Detection
 After CAPTCHA Detected, the main code will stop and will tell you on console that CAPTCHA has been detected.
-![Screenshot 2023-05-08 224101](https://user-images.githubusercontent.com/53290732/236873714-04742a65-0e48-4c4a-b24b-50da69352030.png)
-
+<img src="https://user-images.githubusercontent.com/53290732/236873714-04742a65-0e48-4c4a-b24b-50da69352030.png" width=50% height=50%>
 
 You need to /verify manual on the Chromium where the discord run. After that, you can see notification indicating that you're safe to continue.
-![Screenshot 2023-05-08 224127](https://user-images.githubusercontent.com/53290732/236873915-f1bbee1d-2775-4377-bf96-0181d515e9d4.png)
+<img src="https://user-images.githubusercontent.com/53290732/236873915-f1bbee1d-2775-4377-bf96-0181d515e9d4.png" width=50% height=50%>
 
 After that, you still need 1 more thing to break to cycle. All you need is to type anything on chatbox and just press enter. And bam, the main code will continue to run again.
-![Screenshot 2023-05-08 224208](https://user-images.githubusercontent.com/53290732/236874231-a3042b73-6f1f-417f-9658-3ee2b0ecd00e.png)
+<img src="https://user-images.githubusercontent.com/53290732/236874231-a3042b73-6f1f-417f-9658-3ee2b0ecd00e.png" width=50% height=50%>
 
 Because, we need to change the last message in channel. If we didn't type anyting, the last message will still a CAPTCHA, so we need to add something to break that cycle.
 
