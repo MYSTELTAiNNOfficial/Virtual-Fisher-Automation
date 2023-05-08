@@ -14,13 +14,13 @@ const username = "username here";
 //Put your channel ID and server ID here.
 //if you don't know where to find, look at this example: https://discord.com/channels/serverID/channelID
 //Note: You must be only the user in the channel, if there's another user, the bot will not work.
-const serverID = "server ID here";
-const channelID = "channel ID here";
+const serverID = "serverID here";
+const channelID = "channelID here";
 //Actually, you can use this bot to other discord bot, but idk if it works or not because the main target here is Virtual Fisher.
 const botName = "Virtual Fisher";
 
+const bait = "Fish"; //change the bait to the current bait you're using.
 let run = 0;
-const delay = 10000;
 
 //if you want to use this bot to other discord bot, you need to change this captchaTitle and captchaDesc to the captcha title and description of the bot.
 const captchaTitle = "Anti-bot\n/verify <result>";
@@ -50,6 +50,8 @@ const body = {
                     lastMsg = response.data[0].content;
                 }
                 return lastMsg;
+            }).catch((error) => {
+                console.log(error);
             });
         //Get last message end
 
@@ -59,27 +61,46 @@ const body = {
         if (lastMsg != captchaTitle && lastMsg != captchaDesc) {
             //Change this block of code as you want.
             //Block code start
+            await dc.textMsg('/bait');
+            var checkBait = await axios.get(`http://discord.com/api/v9/channels/${channelID}/messages?limit=1`, { headers: { Authorization: token } })
+                .then((response) => {
+                    if (response.data[0].author.username == botName) {
+                        checkBait = response.data[0].embeds[0].description.split(" ");
+                    }
+                    return checkBait;
+                }).catch((error) => {
+                    console.log(error);
+                });
+
+            var currentTotalBait;
+            for (var i = 0; i < checkBait.length; i++) {
+                if (checkBait[i] == bait) {
+                    currentTotalBait = checkBait[i + 2].split("**").join("");
+                }
+            }
+            console.log('Current Total Bait: ' + currentTotalBait);
+
             run++;
             console.log('Run: ' + run);
             currentRun = run % 5;
             if (currentRun != 0) {
-                await dc.textMsg('/fish');
-                await dc.textMsg('/buy');
-                await dc.textMsg('Leeches 1');
+                if (currentTotalBait > 10) {
+                    await dc.textMsg('/fish');
+                } else {
+                    await dc.textMsg('/buy');
+                    await dc.textMsg(`${bait} 1`);
+                }
             } else {
                 await dc.textMsg('/sell');
                 await dc.textMsg('all');
             }
 
-            console.log((delay / 1000) + ' seconds delay');
-            await dc.page.waitForTimeout(delay);
-
             body.init();
             //Block code end
         } else {
             //Do not change this block of code!!. If you know what you're doing, you can change it.
-            console.log("Captcha Detected!! Finish the captcha and re-run the bot");
-            await dc.page.waitForTimeout(delay);
+            console.log("Captcha Detected!! Finish the captcha and type anything in channel.");
+            await dc.page.waitForTimeout(5000);
             body.init();
         }
     }
