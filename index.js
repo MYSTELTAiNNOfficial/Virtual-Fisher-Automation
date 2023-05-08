@@ -3,7 +3,7 @@ const axios = require('axios');
 
 //Variable start
 
-//Put your email, password and token here.
+//Put your username, email, password and token here.
 //Also, do not share this to anyone!
 const email = "email here";
 const password = "password here";
