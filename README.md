@@ -2,6 +2,7 @@
 
 ## Table of Contents
 - [About](#about)
+- [Changelog](#changelog)
 - [Getting Started](#getting_started)
 - [Usage](#usage)
 - [Disclaimer](#disclaimer)
@@ -11,6 +12,14 @@
 This project is solely for learning purpose and "fun" purpose. It is not intended to be used in any other way.
 
 This project is a automated command for Discord Bot, Virtual Fisher". This project build on NodeJS. Using Puppeteer to automate the process of fishing in the game, by automatically typing a command in Discord chat. And using Discord API to check for the last message, to avoid getting banned by the bot.
+
+## Changelog <a name = "changelog"></a>
+
+> - [10/05/23](https://github.com/MYSTELTAiNNOfficial/Virtual-Fisher-Automation/pull/4) <-- Latest
+>   - New function/feature, Auto Click Button.
+>   - New error handling.
+> - [09/05/23](https://github.com/MYSTELTAiNNOfficial/Virtual-Fisher-Automation/pull/3)
+>   - Add checking how much the bait currently
 
 ## Getting Started <a name = "getting_started"></a>
 
