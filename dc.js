@@ -26,12 +26,25 @@ const discord = {
         await discord.page.waitForTimeout(5000);
     },
     textMsg: async (msg) => {
-        await discord.page.type('div[data-slate-node="element"]', msg, { delay: 100 });
+        await discord.page.type('div[data-slate-node="element"]', msg);
         await discord.page.waitForTimeout(1500);
         await discord.page.keyboard.press('Enter');
         await discord.page.waitForTimeout(500);
         await discord.page.keyboard.press('Enter');
         await discord.page.waitForTimeout(1500);
+    },
+    clickBtn: async () => {
+        await discord.page.waitForSelector('.label-31sIdr', { timeout: 3000 }).catch(() => console.log('Button doesn\'t exist!'));
+        await discord.page.evaluate(() => {
+            var fish = Array.from(document.querySelectorAll('.label-31sIdr')).filter(element => element.textContent == 'Fish Again');
+            if(fish.length > 0){
+                fish[0].click();
+            }
+            var sell = Array.from(document.querySelectorAll('.label-31sIdr')).filter(element => element.textContent == 'Sell');
+            if(sell.length > 0){
+                sell[0].click();
+            }
+        });
     }
 }
 

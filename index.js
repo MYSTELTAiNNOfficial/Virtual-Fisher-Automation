@@ -19,8 +19,9 @@ const channelID = "channelID here";
 //Actually, you can use this bot to other discord bot, but idk if it works or not because the main target here is Virtual Fisher.
 const botName = "Virtual Fisher";
 
-const bait = "Fish"; //change the bait to the current bait you're using.
 let run = 0;
+var cooldown = 3500; //Cooldown in game, in ms. Default is 3500ms. Change to your own cooldown.
+const bait = "Worms"; //Change to your own bait. Default is Worms.
 
 //if you want to use this bot to other discord bot, you need to change this captchaTitle and captchaDesc to the captcha title and description of the bot.
 const captchaTitle = "Anti-bot\n/verify <result>";
@@ -31,11 +32,14 @@ const captchaDesc = ":information_source: To continue, solve the captcha posted 
     await dc.init();
     await dc.login(email, password);
     await dc.moveTo(serverID, channelID);
-    body.init();
+
+    //Uncomment one of these to use the bot.
+    // body.botType(); //for auto typing slash command
+    body.botClick(); // = for auto clicking button (Recommended, because there's no delay and it's faster, but you need to stock bait as many as you can).
 })();
 
 const body = {
-    init: async () => {
+    botType: async () => {
         //Getting last message in channels
         var lastMsg = await axios.get(`http://discord.com/api/v9/channels/${channelID}/messages?limit=1`, { headers: { Authorization: token } })
             .then((response) => {
@@ -58,7 +62,7 @@ const body = {
         console.log(lastMsg);
 
         //Do not change this if..else statement!!. If you know what you're doing, you can change it.
-        if (lastMsg != captchaTitle && lastMsg != captchaDesc) {
+        if (lastMsg != captchaTitle && lastMsg != captchaDesc && lastMsg != undefined) {
             //Change this block of code as you want.
             //Block code start
             await dc.textMsg('/bait');
@@ -73,12 +77,15 @@ const body = {
                 });
 
             var currentTotalBait;
-            for (var i = 0; i < checkBait.length; i++) {
-                if (checkBait[i] == bait) {
-                    currentTotalBait = checkBait[i + 2].split("**").join("");
+            if (checkBait != null) {
+                for (var i = 0; i < checkBait.length; i++) {
+                    if (checkBait[i] == bait) {
+                        currentTotalBait = checkBait[i + 3].split("**").join("");
+                    }
                 }
+            } else {
+                currentTotalBait = 0;
             }
-            console.log('Current Total Bait: ' + currentTotalBait);
 
             run++;
             console.log('Run: ' + run);
@@ -88,20 +95,72 @@ const body = {
                     await dc.textMsg('/fish');
                 } else {
                     await dc.textMsg('/buy');
-                    await dc.textMsg(`${bait} 1`);
+                    await dc.textMsg(`${bait} 10`);
                 }
             } else {
                 await dc.textMsg('/sell');
                 await dc.textMsg('all');
             }
-
-            body.init();
+            body.botType();
             //Block code end
         } else {
             //Do not change this block of code!!. If you know what you're doing, you can change it.
-            console.log("Captcha Detected!! Finish the captcha and type anything in channel.");
-            await dc.page.waitForTimeout(5000);
-            body.init();
+            if (lastMsg == undefined) {
+                console.log("Error detected!! Waiting 10 seconds.");
+                await dc.page.waitForTimeout(10000);
+                body.botType();
+            }
+            if (lastMsg == captchaTitle || lastMsg == captchaDesc) {
+                console.log("Captcha Detected!! Finish the captcha and type anything in channel.");
+                await dc.page.waitForTimeout(10000);
+                body.botType();
+            }
+        }
+    },
+    botClick: async () => {
+        //Getting last message in channels
+        var lastMsg = await axios.get(`http://discord.com/api/v9/channels/${channelID}/messages?limit=1`, { headers: { Authorization: token } })
+            .then((response) => {
+                if (response.data[0].author.username == botName) {
+                    if (response.data[0].embeds[0].title != null) {
+                        lastMsg = response.data[0].embeds[0].title;
+                    } else {
+                        lastMsg = response.data[0].embeds[0].description;
+                    }
+
+                } else if (response.data[0].author.username == username) {
+                    lastMsg = response.data[0].content;
+                }
+                return lastMsg;
+            }).catch((error) => {
+                console.log(error);
+            });
+        //Get last message end
+
+        console.log(lastMsg);
+
+        //Do not change this if..else statement!!. If you know what you're doing, you can change it.
+        if (lastMsg != captchaTitle && lastMsg != captchaDesc && lastMsg != undefined) {
+            //Change this block of code as you want.
+            //Block code start
+            run++;
+            console.log('Run: ' + run);
+            await dc.clickBtn();
+            await dc.page.waitForTimeout(cooldown);
+            body.botClick();
+            //Block code end
+        } else {
+            //Do not change this block of code!!. If you know what you're doing, you can change it.
+            if (lastMsg == undefined) {
+                console.log("Error detected!! Waiting 10 seconds.");
+                await dc.page.waitForTimeout(10000);
+                body.botClick();
+            }
+            if (lastMsg == captchaTitle || lastMsg == captchaDesc) {
+                console.log("Captcha Detected!! Finish the captcha and type anything in channel.");
+                await dc.page.waitForTimeout(10000);
+                body.botClick();
+            }
         }
     }
 }
