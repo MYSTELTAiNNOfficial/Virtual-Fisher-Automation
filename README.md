@@ -1,5 +1,14 @@
 # Virtual Fisher Automation (VFA)
 
+## BEFORE CONTINUE PLEASE READ THIS
+Hello there, it's MYSTELTAiNN, thank you for using this script for automation!
+As you know, things changed so many within the NodeJS itself and some package that i use in this project, and because of that, so many bugs and errors appear.
+I know about this but still i can't do anything (and won't do anything), since my focus right now is on Game Development (I'll be a Solo Indie Dev if i can make it through).
+
+So, considering so many aspects, i decide to archive this project (not delete), and i will (but not this year, i think) open this project and update it again in future (not sure if i can make it work again since so many changes will appear in future).
+
+But for now, i just gonna say thank you to you all who ask me about the project in issues (and i'm so sorry because i never reply to you because i'm very shy, LOL).
+
 ## Table of Contents
 - [About](#about)
 - [Changelog](#changelog)
